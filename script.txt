@@ -1,0 +1,99 @@
+const products=[
+{id:1,name:"Waterproof Backpack",cat:"Fashion",price:1699,old:2499,icon:"🎒",rating:"4.5",reviews:120,off:"32% ছাড়"},
+{id:2,name:"TWS Bluetooth Earbuds",cat:"Gadgets",price:1199,old:1999,icon:"🎧",rating:"4.7",reviews:86,off:"40% ছাড়"},
+{id:3,name:"Smart Fitness Watch",cat:"Sports",price:1899,old:3099,icon:"⌚",rating:"4.6",reviews:95,off:"38% ছাড়"},
+{id:4,name:"Stainless Steel Bottle",cat:"Home",price:399,old:599,icon:"🥤",rating:"4.4",reviews:70,off:"33% ছাড়"},
+{id:5,name:"Casual Sports Shoes",cat:"Fashion",price:1599,old:2499,icon:"👟",rating:"4.3",reviews:58,off:"36% ছাড়"},
+{id:6,name:"Kitchen Storage Set",cat:"Home",price:699,old:999,icon:"🍱",rating:"4.5",reviews:42,off:"30% ছাড়"},
+{id:7,name:"Islamic Book",cat:"Books",price:299,old:399,icon:"📖",rating:"4.8",reviews:33,off:"25% ছাড়"},
+{id:8,name:"Desk Organizer",cat:"Home",price:349,old:499,icon:"🗂️",rating:"4.4",reviews:27,off:"30% ছাড়"}
+];
+let cart=JSON.parse(localStorage.getItem("mb_cart")||"[]");
+const money=n=>"₹"+n.toLocaleString("en-IN");
+function render(list=products){
+ const g=document.getElementById("productGrid");
+ g.innerHTML=list.map(p=>`<article class="card"><span class="badge">${p.off}</span><div class="photo">${p.icon}</div><div class="rating">⭐ ${p.rating} (${p.reviews})</div><h3>${p.name}</h3><div class="price">${money(p.price)} <span class="old">${money(p.old)}</span></div><button class="primary" onclick="add(${p.id})">🛒 কার্টে যোগ করুন</button><button class="outline" onclick="buyNow(${p.id})">এখনই কিনুন</button></article>`).join("");
+}
+function save(){localStorage.setItem("mb_cart",JSON.stringify(cart));updateCount()}
+function updateCount(){document.getElementById("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0)}
+function add(id){const x=cart.find(i=>i.id===id);x?x.qty++:cart.push({id,qty:1});save();renderCart();openCart()}
+function remove(id){cart=cart.filter(x=>x.id!==id);save();renderCart()}
+function change(id,d){const x=cart.find(i=>i.id===id);if(!x)return;x.qty+=d;if(x.qty<1)remove(id);else{save();renderCart()}}
+function renderCart(){
+ const box=document.getElementById("cartItems");
+ if(!cart.length){box.innerHTML='<div class="empty">আপনার কার্ট এখন খালি। 🛒</div>';document.getElementById("cartTotal").textContent="";return}
+ let total=0;
+ box.innerHTML=cart.map(x=>{const p=products.find(p=>p.id===x.id);total+=p.price*x.qty;return `<div class="cartRow"><div class="mini">${p.icon}</div><div><b>${p.name}</b><div>${money(p.price)} × ${x.qty}</div><div class="qty"><button onclick="change(${p.id},-1)">−</button> ${x.qty} <button onclick="change(${p.id},1)">+</button></div></div><button onclick="remove(${p.id})">🗑️</button></div>`}).join("");
+ document.getElementById("cartTotal").textContent="মোট: "+money(total);
+}
+function openCart(){renderCart();document.getElementById("cartDrawer").classList.add("show")}
+function closeCart(){document.getElementById("cartDrawer").classList.remove("show")}
+function buyNow(id){add(id);checkout()}
+function checkout(){
+ if(!cart.length){alert("আগে একটি পণ্য কার্টে যোগ করুন।");return}
+ closeCart();let total=0;
+ const lines=cart.map(x=>{const p=products.find(p=>p.id===x.id);total+=p.price*x.qty;return `${p.name} × ${x.qty} = ${money(p.price*x.qty)}`}).join("<br>");
+ document.getElementById("orderSummary").innerHTML=`<div class="summary"><b>অর্ডার:</b><br>${lines}<hr><b>মোট: ${money(total)}</b></div>`;
+ document.getElementById("checkoutModal").classList.add("show")
+}
+function closeCheckout(){document.getElementById("checkoutModal").classList.remove("show")}
+function placeOrder(){
+ const name=document.getElementById("name").value.trim();
+ const phone=document.getElementById("phone").value.trim();
+ const address=document.getElementById("address").value.trim();
+ const city=document.getElementById("city").value.trim();
+ const pin=document.getElementById("pin").value.trim();
+ const note=document.getElementById("note").value.trim();
+
+ if(!name||!phone||!address||!city||!pin){
+   alert("দয়া করে * দেওয়া সব তথ্য পূরণ করুন।");
+   return;
+ }
+
+ // IMPORTANT: Replace this with your own WhatsApp number, country code included.
+ // Example India: 919876543210 (no +, spaces, or leading 0)
+ const SELLER_WHATSAPP="917431887330";
+
+ if(SELLER_WHATSAPP==="YOUR_WHATSAPP_NUMBER"){
+   alert("প্রথমে script.js ফাইলে YOUR_WHATSAPP_NUMBER-এর জায়গায় তোমার WhatsApp নম্বর বসাতে হবে।");
+   return;
+ }
+
+ const orderId="MB"+Date.now().toString().slice(-7);
+ let total=0;
+ const lines=cart.map(x=>{
+   const p=products.find(p=>p.id===x.id);
+   total+=p.price*x.qty;
+   return `• ${p.name} × ${x.qty} = ${money(p.price*x.qty)}`;
+ }).join("\n");
+
+ const message =
+ `🛍️ *NEW ORDER — MONER BAZAR*%0A`+
+ `Order ID: ${orderId}%0A%0A`+
+ `*Customer:* ${encodeURIComponent(name)}%0A`+
+ `*Phone:* ${encodeURIComponent(phone)}%0A`+
+ `*Address:* ${encodeURIComponent(address+", "+city+" - "+pin)}%0A`+
+ (note ? `*Note:* ${encodeURIComponent(note)}%0A` : "")+
+ `%0A*Products:*%0A${encodeURIComponent(lines)}%0A%0A`+
+ `*Total: ${money(total)}*%0A`+
+ `Payment: Cash on Delivery`;
+
+ const url=`https://wa.me/${SELLER_WHATSAPP}?text=${message}`;
+ window.open(url,"_blank");
+
+ localStorage.setItem("lastOrder",JSON.stringify({
+   orderId,name,phone,address,city,pin,note,
+   order:cart.map(x=>({id:x.id,qty:x.qty})),
+   total
+ }));
+
+ cart=[];
+ save();
+ closeCheckout();
+
+ alert(`Order ID: ${orderId}\n\nWhatsApp খুলবে। সেখানে Send চাপলেই অর্ডারটি তোমার WhatsApp-এ চলে যাবে।`);
+}
+function filterCategory(cat){render(cat==="all"?products:products.filter(p=>p.cat===cat));document.querySelector('#products').scrollIntoView({behavior:'smooth'})}
+function searchProducts(){const q=document.getElementById("search").value.toLowerCase();render(products.filter(p=>(p.name+" "+p.cat).toLowerCase().includes(q)))}
+document.getElementById("search").addEventListener("keydown",e=>{if(e.key==="Enter")searchProducts()});
+render();updateCount();

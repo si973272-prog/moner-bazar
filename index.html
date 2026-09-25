@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Moner Bazar — ভালো পণ্য, সহজ দামে</title>
+  <meta name="description" content="Moner Bazar — দৈনন্দিন প্রয়োজনীয় পণ্য সহজ দামে। অনলাইনে পণ্য দেখুন, কার্টে যোগ করুন এবং অর্ডার করুন।">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://YOUR-DOMAIN.example/">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="nav wrap">
+    <a class="brand" href="#"><span class="bag">🛍️</span><span><b>Moner</b> <strong>Bazar</strong><small>ভালো পণ্য, সহজ দামে</small></span></a>
+    <div class="search"><input id="search" placeholder="কোন পণ্য খুঁজছেন?"><button onclick="searchProducts()">🔍</button></div>
+    <button class="account">👤 আমার অ্যাকাউন্ট</button>
+    <button class="cartBtn" onclick="openCart()">🛒 কার্ট <i id="cartCount">0</i></button>
+  </div>
+  <nav><div class="wrap navlinks"><a href="#">হোম</a><a href="#products">পণ্যসমূহ</a><a href="#categories">ক্যাটাগরি</a><a href="#about">আমাদের সম্পর্কে</a><a href="#contact">যোগাযোগ</a></div></nav>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap heroIn">
+    <div><span class="pill">আজকের বিশেষ অফার!</span><h1>আপনার প্রয়োজনীয় পণ্য<br><em>এখন আরও কম দামে!</em></h1><p>বাড়ির প্রয়োজন, নিজের পছন্দ—সব এক জায়গায়।</p><button class="primary" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">এখনই কিনুন →</button></div>
+    <div class="heroArt"><div class="sale">UP TO<br><b>50%</b><br>OFF</div><div class="boxes">🎒　👟　⌚　🧴</div></div>
+  </div>
+</section>
+
+<section class="wrap section" id="categories">
+  <div class="sectionHead"><h2>জনপ্রিয় ক্যাটাগরি</h2><button onclick="filterCategory('all')">সব ক্যাটাগরি দেখুন →</button></div>
+  <div class="cats">
+    <button onclick="filterCategory('Fashion')">👕<span>পোশাক</span></button>
+    <button onclick="filterCategory('Gadgets')">📱<span>মোবাইল & গ্যাজেট</span></button>
+    <button onclick="filterCategory('Home')">🍳<span>ঘর ও রান্নাঘর</span></button>
+    <button onclick="filterCategory('Books')">📚<span>বই</span></button>
+    <button onclick="filterCategory('Beauty')">🧴<span>বিউটি</span></button>
+    <button onclick="filterCategory('Sports')">🏋️<span>স্পোর্টস</span></button>
+    <button onclick="filterCategory('Toys')">🧸<span>খেলনা</span></button>
+    <button onclick="filterCategory('all')">•••<span>আরও পণ্য</span></button>
+  </div>
+</section>
+
+<section class="wrap section" id="products">
+  <div class="sectionHead"><h2>🔥 বেস্ট সেলিং পণ্য</h2><button onclick="filterCategory('all')">সব পণ্য দেখুন →</button></div>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<section class="trust"><div class="wrap trustGrid">
+  <div>🚚 <b>ফাস্ট ডেলিভারি</b><small>সারা দেশে কুরিয়ার ডেলিভারি</small></div>
+  <div>🛡️ <b>নিরাপদ পেমেন্ট</b><small>UPI, কার্ড, COD* সুবিধা</small></div>
+  <div>↩️ <b>সহজ রিটার্ন</b><small>প্রযোজ্য পণ্যে রিটার্ন সুবিধা</small></div>
+  <div>🎧 <b>সাপোর্ট</b><small>আপনার প্রয়োজনেই পাশে</small></div>
+</div></section>
+
+<section class="wrap promos">
+  <div>📚 <b>বইয়ের দারুণ কালেকশন</b><span>এখনই দেখুন →</span></div>
+  <div>🧴 <b>বিউটি & স্কিন কেয়ার</b><span>কিনে দেখুন →</span></div>
+  <div>🍳 <b>ঘর ও রান্নাঘরের পণ্য</b><span>এখনই দেখুন →</span></div>
+</section>
+</main>
+
+<footer id="about">
+  <div class="wrap foot">
+    <div><h2>🛍️ Moner <strong>Bazar</strong></h2><p>ভালো পণ্য, সহজ দামে। আপনার প্রয়োজনীয় পণ্য এক জায়গায়।</p></div>
+    <div><h3>দ্রুত লিংক</h3><a href="#">হোম</a><a href="#products">পণ্যসমূহ</a><a href="#categories">ক্যাটাগরি</a></div>
+    <div id="contact"><h3>কাস্টমার সাপোর্ট</h3><a href="#">FAQs</a><a href="#">ডেলিভারি তথ্য</a><a href="#">রিটার্ন পলিসি</a></div>
+    <div><h3>যোগাযোগ</h3><p>WhatsApp: YOUR-WHATSAPP-NUMBER</p><p>Email: YOUR-EMAIL</p></div>
+  </div>
+  <div class="copy">© 2026 Moner Bazar. All rights reserved.</div>
+</footer>
+
+<div class="drawer" id="cartDrawer">
+  <div class="cartPanel"><div class="cartHead"><h2>🛒 আপনার কার্ট</h2><button onclick="closeCart()">✕</button></div><div id="cartItems"></div><div class="total" id="cartTotal"></div><button class="primary full" onclick="checkout()">Checkout →</button></div>
+</div>
+
+<div class="modal" id="checkoutModal">
+  <div class="checkoutBox">
+    <button class="close" onclick="closeCheckout()">✕</button>
+    <h2>📦 অর্ডার করুন</h2>
+    <p class="muted">আপনার তথ্য দিন। অর্ডারটি নিশ্চিত করার আগে সব তথ্য দেখে নিন।</p>
+    <input id="name" placeholder="আপনার নাম *">
+    <input id="phone" placeholder="মোবাইল নম্বর *" inputmode="tel">
+    <input id="address" placeholder="বাড়ি/গ্রাম/রাস্তা *">
+    <input id="city" placeholder="শহর/থানা *">
+    <input id="pin" placeholder="PIN Code *" inputmode="numeric">
+    <textarea id="note" placeholder="অতিরিক্ত নির্দেশনা (ঐচ্ছিক)"></textarea>
+    <div id="orderSummary"></div>
+    <button class="primary full" onclick="placeOrder()">অর্ডার নিশ্চিত করুন</button>
+    <p class="tiny">* এখন এটি demo checkout। WhatsApp/online payment চালু করতে আপনার ব্যবসার নম্বর ও payment setup লাগবে।</p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
